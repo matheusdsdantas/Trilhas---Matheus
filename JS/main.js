@@ -1,30 +1,35 @@
-let nextBtn = document.querySelector('.next')
-let prevBtn = document.querySelector('.prev')
+const nextBtn = document.querySelector('.next')
+const prevBtn = document.querySelector('.prev')
+const slider = document.querySelector('.slider')
+const sliderList = slider.querySelector('.list')
+const thumbnail = slider.querySelector('.thumbnail')
 
-let slider = document.querySelector('.slider')
-let sliderList = slider.querySelector('.slider .list')
-let thumbnail = document.querySelector('.slider .thumbnail')
-let thumbnailItems = thumbnail.querySelectorAll('.item')
+const animationTime = 1600
+let isMoving = false
 
-thumbnail.appendChild(thumbnailItems[0])
-
-// Funçao para o botao
-nextBtn.onclick = function() {
-    moveSlider('next')
+// A primeira miniatura representa a imagem atual. Ela vai para o fim para que
+// a primeira miniatura visível passe a representar o próximo slide.
+if (thumbnail.firstElementChild) {
+    thumbnail.appendChild(thumbnail.firstElementChild)
 }
 
-
-// Funçao para o prox botao
-prevBtn.onclick = function() {
-    moveSlider('prev')
-}
-
+nextBtn.addEventListener('click', () => moveSlider('next'))
+prevBtn.addEventListener('click', () => moveSlider('prev'))
 
 function moveSlider(direction) {
-    let sliderItems = sliderList.querySelectorAll('.item')
-    let thumbnailItems = document.querySelectorAll('.thumbnail .item')
-    
-    if(direction === 'next'){
+    if (isMoving) return
+
+    const sliderItems = Array.from(sliderList.children)
+    const thumbnailItems = Array.from(thumbnail.children)
+
+    if (sliderItems.length !== thumbnailItems.length) {
+        console.error('Cada slide precisa ter uma miniatura correspondente.')
+        return
+    }
+
+    isMoving = true
+
+    if (direction === 'next') {
         sliderList.appendChild(sliderItems[0])
         thumbnail.appendChild(thumbnailItems[0])
         slider.classList.add('next')
@@ -34,12 +39,8 @@ function moveSlider(direction) {
         slider.classList.add('prev')
     }
 
-
-    slider.addEventListener('animationend', function() {
-        if(direction === 'next'){
-            slider.classList.remove('next')
-        } else {
-            slider.classList.remove('prev')
-        }
-    }, {once: true})
+    window.setTimeout(() => {
+        slider.classList.remove('next', 'prev')
+        isMoving = false
+    }, animationTime)
 }

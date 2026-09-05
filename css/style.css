@@ -229,25 +229,18 @@ header a:hover{
 
 
 
-/* Animação para o próximo Clique no botão*/
+/* Troca para o próximo slide sem aumentar a imagem */
 
-.slider.next .list .item:nth-child(1) img{
-    width: 150px;
-    height: 220px;
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    border-radius: 30px;
-    animation: showImage .5s linear 1 forwards;
+.slider.next .list .item:nth-child(1){
+    animation: fadeSlide .5s ease-in-out both;
 }
 
-@keyframes showImage{
+@keyframes fadeSlide{
+    from{
+        opacity: 0;
+    }
     to{
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
+        opacity: 1;
     }
 }
 
